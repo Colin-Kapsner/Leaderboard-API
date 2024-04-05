@@ -17,7 +17,7 @@ class TimeFactory extends Factory
     public function definition(): array
     {
         return [
-            'time' => fake()->randomFloat(20.000, .001, 100.000),
+            'time' => fake()->randomFloat(10.000, .001, 100.000),
         ];
     }
 }

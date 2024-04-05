@@ -10,6 +10,13 @@ class Time extends Model
 {
     use HasFactory;
 
+
+    protected $fillable = [
+        'uesr_id',
+        'time',
+    ];
+
+
     public function users(): BelongsTo
     {
         return $this->belongsTo(User::class);

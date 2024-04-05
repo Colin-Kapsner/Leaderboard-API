@@ -6,9 +6,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Time;
-use illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use illuminate\Support\Str;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,8 +26,8 @@ class DatabaseSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ]);
 
-        User::factory(30)
-            ->has(Time::factory()->count(10))
+        User::factory(35)
+            ->has(Time::factory()->count(25))
             ->create();
     }
 }
