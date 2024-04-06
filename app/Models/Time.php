@@ -12,7 +12,7 @@ class Time extends Model
 
 
     protected $fillable = [
-        'uesr_id',
+        'user_id',
         'time',
     ];
 
