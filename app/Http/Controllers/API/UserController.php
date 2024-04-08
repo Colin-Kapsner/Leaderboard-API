@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -26,7 +27,7 @@ class UserController extends Controller
         $request['user_id'] = Auth::user()->id;
         $user = new User($request->all());
         $user->save();
-        response()->json([
+        return response()->json([
             "message" => "Success!"
         ], 201);
     }
@@ -37,7 +38,8 @@ class UserController extends Controller
     public function show(User $user)
     {
         if($user->user_id == Auth::user()->id){
-            return $user;
+            return new UserResource($user);
+            abort(403);
         }
     }
 
@@ -49,7 +51,7 @@ class UserController extends Controller
         if($user->user_id == Auth::user()->id){
             $user->update($request->all());
         }
-        response()->json([
+        return response()->json([
             "message" => "Success! Updated."
         ], 200);
     }
@@ -62,7 +64,7 @@ class UserController extends Controller
         if($user->user_id == Auth::user()->id){
             $user->delete;
         }
-        response()->json([
+        return response()->json([
             "message" => "Success! Deleted."
         ], 202);
     }
