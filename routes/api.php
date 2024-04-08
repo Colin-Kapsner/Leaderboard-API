@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
-use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\TimeController;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,14 +23,31 @@ use App\Http\Controllers\API\UserController;
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('v1')->group(function () {
-        Route::apiResource('users', UserController::class);
+        Route::apiResource('times', TimeController::class);
+
+        //
 
         //Route::get('/user', function (Request $request){
         //    return $request->user();
         //});
     });
+});
 
-    Route::prefix('v2')->group(function () {
-        //
-    });
+Route::post('v1/login/token', function (Request $request) {
+    $request->validate([
+        'username' => 'required',
+        'password' => 'required',
+        'device_name' => 'required',
+    ]);
+
+    $user = User::where('username', $request->username)->first();
+
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        throw ValidationException::withMessages([
+            'error' => ['The provided credentials are incorrect.'],
+        ]);
+    }
+
+    $tokenText = $user->createToken($request->device_name)->plainTextToken;
+    return ['token' => $tokenText];
 });

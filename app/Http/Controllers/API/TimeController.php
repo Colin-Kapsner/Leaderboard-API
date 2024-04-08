@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Time;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\UserResource;
-
-class UserController extends Controller
+use App\Http\Resources\TimeResource;
+class TimeController extends Controller
 {
+
+
+    public function leaderboard()
+    {
+
+    }
     /**
      * Display a listing of the resource.
      */
@@ -25,8 +31,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request['user_id'] = Auth::user()->id;
-        $user = new User($request->all());
-        $user->save();
+        $time = new Time($request->all());
+        $time->save();
         return response()->json([
             "message" => "Success!"
         ], 201);
@@ -35,12 +41,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Time $time)
     {
-        if($user->user_id == Auth::user()->id){
-            return new UserResource($user);
-            abort(403);
-        }
+        return new TimeResource($time);
     }
 
     /**
@@ -48,12 +51,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if($user->user_id == Auth::user()->id){
-            $user->update($request->all());
-        }
-        return response()->json([
-            "message" => "Success! Updated."
-        ], 200);
+        //
     }
 
     /**
@@ -61,11 +59,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if($user->user_id == Auth::user()->id){
-            $user->delete;
-        }
-        return response()->json([
-            "message" => "Success! Deleted."
-        ], 202);
+        //if($user->user_id == Auth::user()->id){
+        //    $time->delete;
+        //}
+        //return response()->json([
+        //    "message" => "Success! Deleted."
+        //], 202);
     }
 }

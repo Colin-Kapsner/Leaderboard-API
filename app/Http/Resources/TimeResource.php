@@ -15,8 +15,11 @@ class TimeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'time' => $this->time,
-            'user_id' => $this->user_id
+            'type' => 'times',
+            'attributes' => [
+                'time' => $this->time,
+                'user_id' => $this->user_id
+            ]
         ];
     }
 }
