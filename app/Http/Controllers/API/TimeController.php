@@ -12,10 +12,21 @@ class TimeController extends Controller
 {
 
 
-    public function leaderboard()
+    public function returnTopTimes(Request $request)
     {
-
+        // sort all times in descending order and return the top ones
+        $query = Auth::user()->times();
+        
+        $columns = explode(',', $request->input('sort'));
+        foreach($columns as $column){
+            if(substr($column, 0, 1) =='-'){
+                $query = $query->orderBy(ltrim($column, '-'), 'desc');
+            } else {
+                $query = $query->orderBy($column, 'asc');
+            }
+        }
     }
+
     /**
      * Display a listing of the resource.
      */
