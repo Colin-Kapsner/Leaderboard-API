@@ -8,23 +8,29 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\TimeResource;
+use App\Http\Resources\TimesResource;
+
+
 class TimeController extends Controller
+
 {
 
 
-    public function returnTopTimes(Request $request)
+    public function topTimes(Request $request)
     {
         // sort all times in descending order and return the top ones
-        $query = Auth::user()->times();
-        
-        $columns = explode(',', $request->input('sort'));
-        foreach($columns as $column){
-            if(substr($column, 0, 1) =='-'){
-                $query = $query->orderBy(ltrim($column, '-'), 'desc');
-            } else {
-                $query = $query->orderBy($column, 'asc');
-            }
+        $query = $request->user()->times();
+
+        if($request->input('page')){
+            return new TimesResource($query->paginate(10));
         }
+        return new TimesResource($query->orderBy('time', 'asc')->limit(10)->get());
+    }
+
+    public function allTopTimes(Request $request)
+    {
+        $times = Time::query()->orderBy('time', 'asc')->limit(10)->get();
+        return new TimesResource($times);
     }
 
     /**
@@ -32,8 +38,8 @@ class TimeController extends Controller
      */
     public function index()
     {
-        $users = Auth::user()->users;
-        return $users;
+        $times = Auth::user()->times;
+        return $times;
     }
 
     /**
@@ -55,14 +61,6 @@ class TimeController extends Controller
     public function show(Time $time)
     {
         return new TimeResource($time);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user)
-    {
-        //
     }
 
     /**

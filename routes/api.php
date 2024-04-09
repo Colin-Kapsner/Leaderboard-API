@@ -25,13 +25,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('v1')->group(function () {
         Route::apiResource('times', TimeController::class);
 
-        //
+
 
         //Route::get('/user', function (Request $request){
         //    return $request->user();
         //});
     });
 });
+
+Route::get('/alltoptimes', [TimeController::class, 'allTopTimes']);
 
 Route::post('v1/login/token', function (Request $request) {
     $request->validate([
@@ -41,6 +43,7 @@ Route::post('v1/login/token', function (Request $request) {
     ]);
 
     $user = User::where('username', $request->username)->first();
+
 
     if (! $user || ! Hash::check($request->password, $user->password)) {
         throw ValidationException::withMessages([

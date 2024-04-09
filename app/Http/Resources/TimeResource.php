@@ -16,6 +16,7 @@ class TimeResource extends JsonResource
     {
         return [
             'type' => 'times',
+            'id' => $this->id,
             'attributes' => [
                 'time' => $this->time,
                 'user_id' => $this->user_id
