@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\API\TimeController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -34,6 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
         //});
     });
 });
+
+Route::post('/signup', [UserController::class, 'store']);
 
 Route::get('/alltoptimes', [TimeController::class, 'allTopTimes']);
 
