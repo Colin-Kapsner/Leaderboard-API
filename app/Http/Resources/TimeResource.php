@@ -19,7 +19,7 @@ class TimeResource extends JsonResource
             'id' => $this->id,
             'attributes' => [
                 'time' => $this->time,
-                'user_id' => $this->user_id
+                'user' => $this->user->username
             ]
         ];
     }

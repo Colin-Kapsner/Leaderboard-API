@@ -23,7 +23,9 @@ use Illuminate\Validation\ValidationException;
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('v1')->group(function () {
-        Route::apiResource('times', TimeController::class);
+        Route::apiResource('times', TimeController::class)->except(['update']);
+
+        Route::get('/toptimes', [TimeController::class, 'topTimes']);
 
 
 
