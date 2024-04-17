@@ -18,7 +18,6 @@ class TimeController extends Controller
 
     public function topTimes(Request $request)
     {
-        // sort all times in descending order and return the top ones
         $query = $request->user()->times();
 
         if($request->input('page')){
@@ -47,12 +46,9 @@ class TimeController extends Controller
      */
     public function store(Request $request)
     {
-        $request['user_id'] = Auth::user()->id;
-        $time = new Time($request->all());
-        $time->save();
-        return response()->json([
-            "message" => "Success!"
-        ], 201);
+        
+        $time = $request->user()->times()->create($request->input("data.attributes"));
+        return (new TimeResource($time))->response()->header("Location", route("times.show", ['time' => $time->id]));
     }
 
     /**
@@ -66,13 +62,11 @@ class TimeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, Time $time)
     {
-        //if($user->user_id == Auth::user()->id){
-        //    $time->delete;
-        //}
-        //return response()->json([
-        //    "message" => "Success! Deleted."
-        //], 202);
+        $time->delete();
+        return response()->json([
+            "message" => "Success! Deleted."
+        ], 202);
     }
 }

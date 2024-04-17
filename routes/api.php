@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\API\TimeController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -23,7 +24,9 @@ use Illuminate\Validation\ValidationException;
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('v1')->group(function () {
-        Route::apiResource('times', TimeController::class);
+        Route::apiResource('times', TimeController::class)->except(['update']);
+
+        Route::get('/toptimes', [TimeController::class, 'topTimes']);
 
 
 
@@ -32,6 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
         //});
     });
 });
+
+Route::post('/signup', [UserController::class, 'store']);
 
 Route::get('/alltoptimes', [TimeController::class, 'allTopTimes']);
 
