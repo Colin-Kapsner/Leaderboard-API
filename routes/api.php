@@ -35,6 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/alltoptimes', [TimeController::class, 'allTopTimes']);
 
+Route::post('/register');
+
 Route::post('v1/login/token', function (Request $request) {
     $request->validate([
         'username' => 'required',
