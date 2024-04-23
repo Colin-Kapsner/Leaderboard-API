@@ -25,9 +25,5 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'remember_token' => Str::random(10),
             ]);
-
-        User::factory(35)
-            ->has(Time::factory()->count(25))
-            ->create();
     }
 }
