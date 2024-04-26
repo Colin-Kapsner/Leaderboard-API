@@ -32,9 +32,11 @@ class TimeController extends Controller
         $times = Time::query()
                 ->where('time', '>', 9)
                 ->orderBy('time', 'asc')
+                ->distinct()
                 ->limit(10)
                 ->get();
         
+        $times = "{'data': $times}";
         return new TimesResource($times);
     }
 
