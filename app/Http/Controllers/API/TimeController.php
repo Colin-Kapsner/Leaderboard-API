@@ -31,8 +31,8 @@ class TimeController extends Controller
 
         $times = DB::table('times')
                 ->where('time', '>', 9)
-                ->orderBy('time', 'asc')
                 ->distinct()
+                ->orderBy('time', 'asc')
                 ->limit(10)
                 ->get();
         
