@@ -33,7 +33,8 @@ class TimeController extends Controller
                 ->where('time', '>', 9)
                 ->orderBy('time', 'asc')
                 ->limit(10)
-                ->get();
+                ->get()
+                ->keyBy('user');
         return new TimesResource($times);
     }
 
