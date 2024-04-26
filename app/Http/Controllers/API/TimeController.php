@@ -18,10 +18,10 @@ class TimeController extends Controller
 
     public function topTimes(Request $request)
     {
-        $query = $request->user()->times();
+        $query = $request->user()->times()->where('time', '>', 9.5);
 
         if($request->input('page')){
-            return new TimesResource($query->paginate(10));
+            return new TimesResource($query->paginate(9.5));
         }
         return new TimesResource($query->orderBy('time', 'asc')->limit(10)->get());
     }
