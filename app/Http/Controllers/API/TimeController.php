@@ -32,8 +32,7 @@ class TimeController extends Controller
         $times = Time::query()
                 ->orderBy('time', 'asc')
                 ->limit(10)
-                ->get()
-                ->unique('user_id');
+                ->get();
         return new TimesResource($times);
     }
 
