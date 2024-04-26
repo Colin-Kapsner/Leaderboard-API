@@ -11,7 +11,6 @@ use App\Http\Resources\TimeResource;
 use App\Http\Resources\TimesResource;
 use Illuminate\Support\Facades\DB;
 
-
 class TimeController extends Controller
 
 {
@@ -29,7 +28,12 @@ class TimeController extends Controller
 
     public function allTopTimes(Request $request)
     {
-        $times = Time::query()->orderBy('time', 'asc')->limit(10)->get();
+        $times = Time::query()
+                ->groupBy('user_id')
+                ->where('time', DB::raw('> 9'))
+                ->min()
+                ->limit(10)
+                ->get();
         return new TimesResource($times);
     }
 
@@ -48,21 +52,8 @@ class TimeController extends Controller
     public function store(Request $request)
     {
         
-        $newtime = $request->user()->times()->create($request->input("data.attributes"));
-
-        if (DB::table('times')->where('user_id', $newtime->id)->exists()) {
-            $oldtime = $request->user()->times()->orderBy('time', 'asc')->limit(1)->get();
-            if ($newtime < $oldtime){
-                DB::table('times')->where('user_id', '=', $oldtime->id)->delete();
-                return (new TimeResource($newtime))->response()->header("Location", route("times.show", ['time' => $newtime->id]));
-            }
-        }
-        else {
-            return (new TimeResource($newtime))->response()->header("Location", route("times.show", ['time' => $newtime->id]));
-        }
-        
-        
-        
+        $time = $request->user()->times()->create($request->input("data.attributes"));
+        return (new TimeResource($time))->response()->header("Location", route("times.show", ['time' => $time->id]));
     }
 
     /**
