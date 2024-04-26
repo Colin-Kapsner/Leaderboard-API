@@ -32,7 +32,7 @@ class TimeController extends Controller
         $times1 = Time::query()
                 ->where('time', '>', 9)
                 ->orderBy('time', 'asc')
-                ->distinct()
+                ->distinct('user')
                 ->limit(10)
                 ->get();
         
