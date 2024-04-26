@@ -35,7 +35,7 @@ class TimeController extends Controller
                 ->orderBy('time', 'asc')
                 ->limit(10)
                 ->get()
-                ;
+                ->toArray();
         return new TimesResource($times);
     }
 
