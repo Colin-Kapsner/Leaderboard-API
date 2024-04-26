@@ -30,7 +30,6 @@ class TimeController extends Controller
     {
         $times = Time::query()
                 ->groupBy('user_id')
-                ->where('time', DB::raw('> 9'))
                 ->min()
                 ->limit(10)
                 ->get();
