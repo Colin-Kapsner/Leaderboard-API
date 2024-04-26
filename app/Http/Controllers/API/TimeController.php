@@ -29,10 +29,9 @@ class TimeController extends Controller
     public function allTopTimes(Request $request)
     {
 
-        $times = DB::table('times')
+        $times = Time::query()
                 ->where('time', '>', 9)
                 ->orderBy('time', 'asc')
-                ->select('user')
                 ->distinct()
                 ->limit(10)
                 ->get();
