@@ -30,11 +30,8 @@ class TimeController extends Controller
     {
 
         $times = Time::query()
-                ->string('user')
-                ->unique()
                 ->where('time', '>', 9)
                 ->orderBy('time', 'asc')
-                
                 ->limit(10)
                 ->get();
         return new TimesResource($times);
