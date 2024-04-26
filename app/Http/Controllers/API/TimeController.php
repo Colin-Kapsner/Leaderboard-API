@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\TimeResource;
 use App\Http\Resources\TimesResource;
+use Illuminate\Support\Facades\DB;
 
 
 class TimeController extends Controller
@@ -47,8 +48,17 @@ class TimeController extends Controller
     public function store(Request $request)
     {
         
-        $time = $request->user()->times()->create($request->input("data.attributes"));
-        return (new TimeResource($time))->response()->header("Location", route("times.show", ['time' => $time->id]));
+        $newtime = $request->user()->times()->create($request->input("data.attributes"));
+
+        if (DB::table('times')->where('user_id', $request->user()->id)->exists()) {
+            $oldtime = $request->user()->times()->orderBy('time', 'asc')->limit(1)->get();
+            if ($newtime < $oldtime){
+                DB::table('times')->where('user_id', '=', $oldtime->id)->delete();
+            }
+        }
+        return (new TimeResource($newtime))->response()->header("Location", route("times.show", ['time' => $newtime->id]));
+        
+        
     }
 
     /**
