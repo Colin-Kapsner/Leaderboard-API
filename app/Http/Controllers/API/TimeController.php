@@ -31,7 +31,7 @@ class TimeController extends Controller
 
         $times = Time::query()
                 ->where('time', '>', 9)
-                ->groupBy('user_id')
+                ->orderBy('time', 'asc')
                 ->limit(10)
                 ->get();
         return new TimesResource($times);
