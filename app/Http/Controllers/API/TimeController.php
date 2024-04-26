@@ -28,7 +28,6 @@ class TimeController extends Controller
 
     public function allTopTimes(Request $request)
     {
-        $times = Time::query()->orderBy('time', 'asc')->limit(10)->get();
 
         $times = Time::query()
                 ->orderBy('time', 'asc')
