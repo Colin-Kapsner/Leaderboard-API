@@ -30,7 +30,7 @@ class TimeController extends Controller
     {
 
         $times = Time::query()
-                ->distinct('user')
+                ->groupBy('user')
                 ->where('time', '>', 9)
                 ->orderBy('time', 'asc')
                 ->limit(10)
