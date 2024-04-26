@@ -29,14 +29,14 @@ class TimeController extends Controller
     public function allTopTimes(Request $request)
     {
 
-        $times = Time::query()
+        $times1 = Time::query()
                 ->where('time', '>', 9)
                 ->orderBy('time', 'asc')
                 ->distinct()
                 ->limit(10)
                 ->get();
         
-        $times = "{'data': $times}";
+        $times = json_encode(array('data' => $times1));
         return new TimesResource($times);
     }
 
