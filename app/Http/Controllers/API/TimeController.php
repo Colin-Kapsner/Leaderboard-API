@@ -54,9 +54,13 @@ class TimeController extends Controller
             $oldtime = $request->user()->times()->orderBy('time', 'asc')->limit(1)->get();
             if ($newtime < $oldtime){
                 DB::table('times')->where('user_id', '=', $oldtime->id)->delete();
+                return (new TimeResource($newtime))->response()->header("Location", route("times.show", ['time' => $newtime->id]));
             }
         }
-        return (new TimeResource($newtime))->response()->header("Location", route("times.show", ['time' => $newtime->id]));
+        else {
+            return (new TimeResource($newtime))->response()->header("Location", route("times.show", ['time' => $newtime->id]));
+        }
+        
         
         
     }
