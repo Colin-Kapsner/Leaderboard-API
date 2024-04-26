@@ -50,7 +50,7 @@ class TimeController extends Controller
         
         $newtime = $request->user()->times()->create($request->input("data.attributes"));
 
-        if (DB::table('times')->where('user_id', $request->user()->id)->exists()) {
+        if (DB::table('times')->where('user_id', $newtime->id)->exists()) {
             $oldtime = $request->user()->times()->orderBy('time', 'asc')->limit(1)->get();
             if ($newtime < $oldtime){
                 DB::table('times')->where('user_id', '=', $oldtime->id)->delete();
