@@ -29,11 +29,13 @@ class TimeController extends Controller
     public function allTopTimes(Request $request)
     {
 
-        $times = Time::query()
+        $times = Time::select('time')
+                ->groupBy('user_id')
                 ->where('time', '>', 9)
                 ->orderBy('time', 'asc')
                 ->limit(10)
-                ->get();
+                ->get()
+                ;
         return new TimesResource($times);
     }
 
