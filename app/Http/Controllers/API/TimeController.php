@@ -7,8 +7,11 @@ use App\Models\Time;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\TimeResource;
 use App\Http\Resources\TimesResource;
+use App\Http\Resources\HighscoreResource;
+use App\Http\Resources\HighscoresResource;
 
 
 class TimeController extends Controller
@@ -28,8 +31,15 @@ class TimeController extends Controller
 
     public function allTopTimes(Request $request)
     {
-        $times = Time::query()->orderBy('time', 'asc')->limit(10)->get();
-        return new TimesResource($times);
+        $times = DB::table('times')
+                        ->join('users', 'users.id', '=', 'times.user_id')
+                        ->selectRaw("users.username as username, min(time) as time")
+                        ->where('time', '>', '9.5')
+                        ->groupBy('users.username')
+                        ->orderBy('time', 'asc')
+                        ->get();
+                        //dd($times);
+        return new HighscoresResource($times);
     }
 
     /**
